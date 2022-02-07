@@ -1,0 +1,3 @@
+[submodule "website/resty"]
+	path = website/resty
+	url = git@github.com:codiy1992/resty-api-waf.git

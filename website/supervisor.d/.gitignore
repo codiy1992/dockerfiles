@@ -1,0 +1,6 @@
+*
+!.gitignore
+!init.conf
+!nginx.conf
+!php-fpm.conf
+!laravel.conf

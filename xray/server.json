@@ -1,0 +1,72 @@
+{
+  "log": {
+      "loglevel": "warning"
+  },
+  "inbounds": [
+      {
+          "port": 443,
+          "protocol": "vless",
+          "settings": {
+              "clients": [
+                  {
+                      "id": "931c89af-a362-44c5-80d2-bda173592f68",
+                      "level": 0,
+                      "flow": "xtls-rprx-direct"
+                  }
+              ],
+              "decryption": "none",
+              "fallbacks": [
+                  {
+                      "dest": 80
+                  },
+                  {
+                      "path": "/400",
+                      "dest": "/dev/shm/xray.sock",
+                      "xver": 1
+                  }
+              ]
+          },
+          "streamSettings": {
+              "network": "tcp",
+              "security": "xtls",
+              "xtlsSettings": {
+                  "alpn": [
+                      "http/1.1"
+                  ],
+                  "certificates": [
+                      {
+                          "certificateFile": "/etc/nginx/certs/{{ domain }}/fullchain.cer",
+                          "keyFile": "/etc/nginx/certs/{{ domain }}/{{ domain }}.key"
+                      }
+                  ]
+              }
+          }
+      },
+      {
+          "listen": "/dev/shm/xray.sock",
+          "protocol": "vless",
+          "settings": {
+              "clients": [
+                  {
+                      "id": "931c89af-a362-44c5-80d2-bda173592f68",
+                      "level": 0
+                  }
+              ],
+              "decryption": "none"
+          },
+          "streamSettings": {
+              "network": "ws",
+              "security": "none",
+              "wsSettings": {
+                  "acceptProxyProtocol": true,
+                  "path": "/400"
+              }
+          }
+      }
+  ],
+  "outbounds": [
+      {
+          "protocol": "freedom"
+      }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "inbounds": [
+        {
+            "port": 443,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "OxprCzKv7yxGz0i7",
+                        "email": "wangle"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": ["http/1.1"],
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/nginx/certs/DOMAIN/fullchain.cer",
+                            "keyFile": "/etc/nginx/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 4433,
+            "tag": "ss",
+            "protocol": "shadowsocks",
+            "settings": {
+                "method": "chacha20-ietf-poly1305",
+                "password": "GsH0P3BYMvayzuMK"
+            },
+            "streamSettings": {
+                "network": "tcp"
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 6787,
+            "tag": "tcp_bare",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68",
+                        "level": 0,
+                        "email": "wangle",
+                        "alterId": 0
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "none",
+                "tcpSettings": {
+                    "acceptProxyProtocol": false,
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 6788,
+            "tag": "tcp_http_mask",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "none",
+                "tcpSettings": {
+                    "acceptProxyProtocol": false,
+                    "header": {
+                        "type": "http",
+                        "request": {
+                            "version": "1.1",
+                            "method": "GET",
+                            "path": ["/", "/video"],
+                            "headers": {
+                                "Host": [
+                                    "git.wangle.ltd",
+                                    "static.yahabibiy.com"
+                                ],
+                                "User-Agent": [
+                                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36",
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1"
+                                ],
+                                "Accept-Encoding": ["gzip, deflate"],
+                                "Connection": ["keep-alive"],
+                                "Pragma": "no-cache"
+                            }
+                        },
+                        "response": {
+                            "version": "1.1",
+                            "status": "200",
+                            "reason": "OK",
+                            "headers": {
+                                "Content-Type": [
+                                    "application/octet-stream",
+                                    "video/mpeg"
+                                ],
+                                "Transfer-Encoding": ["chunked"],
+                                "Connection": ["keep-alive"],
+                                "Pragma": "no-cache"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 6789,
+            "tag": "tcp_tls",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/nginx/certs/DOMAIN/fullchain.cer",
+                            "keyFile": "/etc/nginx/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom"
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "inbounds": [
+      {
+        "port": 1080,
+        "protocol": "socks",
+        "sniffing": {
+          "enabled": true,
+          "destOverride": ["http", "tls"]
+        },
+        "settings": {
+          "auth": "noauth"
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "protocol": "vmess",
+        "settings": {
+          "vnext": [
+            {
+              "address": "47.242.156.112",
+              "port": 6787,
+              "users": [
+                {
+                  "id": "931c89af-a362-44c5-80d2-bda173592f68",
+                  "alterId": 0
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "protocol": "freedom",
+        "settings": {},
+        "tag": "direct"
+      }
+    ],
+    "routing": {
+      "domainStrategy": "AsIs",
+      "rules": [
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "protocol": [
+            "bittorrent"
+          ]
+        }
+      ]
+    }
+}
