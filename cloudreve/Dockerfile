@@ -27,11 +27,11 @@ ENV TZ="Asia/Shanghai"
 
 LABEL MAINTAINER="Codiy"
 
-WORKDIR /cloudreve
+WORKDIR /data
 
-COPY --from=builder /ProjectCloudreve/Cloudreve/cloudreve-main /cloudreve/
+COPY --from=builder /ProjectCloudreve/Cloudreve/cloudreve-main /data/cloudreve
 
-VOLUME ["/cloudreve/uploads", "/downloads", "/cloudreve/avatar", "/cloudreve/config", "/cloudreve/db"]
+VOLUME ["/data/uploads", "/data/downloads", "/data/avatar", "/data/config"]
 
 RUN echo ">>>>>> update dependencies" \
     && apk update \
@@ -44,4 +44,4 @@ RUN echo ">>>>>> update dependencies" \
 
 EXPOSE 5212
 
-ENTRYPOINT ["./cloudreve-main", "-c", "/cloudreve/config/conf.ini"]
+ENTRYPOINT ["./cloudreve", "-c", "/data/config/conf.ini"]

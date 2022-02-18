@@ -13,11 +13,11 @@ on:
         default: 'Dockerfile'
       description:
         description: 'Short description(<100 characters)'
-        required: true
+        required: false
         default: ''
       readme_filepath:
         description: 'Specify README.md file location'
-        required: true
+        required: false
         default: './README.md'
 
 jobs:
