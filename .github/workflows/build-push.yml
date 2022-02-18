@@ -55,5 +55,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: codiy/${{ github.event.inputs.context }}
         short-description: ${{ github.event.inputs.description }}
         readme-filepath: ${{ github.event.inputs.readme_filepath }}
