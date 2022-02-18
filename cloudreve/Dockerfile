@@ -1,5 +1,7 @@
 FROM golang:1.17-alpine as builder
 
+ARG CLOUDREVE_VERSION="3.4.2"
+
 WORKDIR /ProjectCloudreve
 
 RUN apk update \
@@ -14,10 +16,11 @@ RUN cd ./Cloudreve/assets \
     && yarn run build
 
 RUN cd ./Cloudreve \
+    && git checkout ${CLOUDREVE_VERSION} \
     && go get github.com/rakyll/statik \
     && statik -src=assets/build/ -include=*.html,*.js,*.json,*.css,*.png,*.svg,*.ico -f \
     && export COMMIT_SHA=$(git rev-parse --short HEAD) \
-    && go build -a -o cloudreve-main -ldflags " -X 'github.com/HFO4/cloudreve/pkg/conf.BackendVersion=$CLOUDREVE_VERSION' -X 'github.com/HFO4/cloudreve/pkg/conf.LastCommit=$COMMIT_SHA'"
+    && go build -a -o cloudreve-main -ldflags " -X 'github.com/cloudreve/Cloudreve/v3/pkg/conf.BackendVersion=$CLOUDREVE_VERSION' -X 'github.com/cloudreve/Cloudreve/v3/pkg/conf.LastCommit=$COMMIT_SHA'"
 
 FROM alpine:latest
 
@@ -31,16 +34,11 @@ WORKDIR /data
 
 COPY --from=builder /ProjectCloudreve/Cloudreve/cloudreve-main /data/cloudreve
 
-VOLUME ["/data/uploads", "/data/downloads", "/data/avatar", "/data/config"]
-
-RUN echo ">>>>>> update dependencies" \
-    && apk update \
+RUN apk update \
     && apk add tzdata \
-    && echo ">>>>>> set up timezone" \
     && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
-    && echo ">>>>>> fix cloudreve-main premission" \
-    && chmod +x /cloudreve/cloudreve-main
+    && chmod +x /data/cloudreve
 
 EXPOSE 5212
 
