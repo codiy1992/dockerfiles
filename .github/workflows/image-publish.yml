@@ -41,4 +41,4 @@ jobs:
         context: ${{ github.event.inputs.location }}
         push: true
         tags: |
-          codiy/${{ github.event.inputs.location }}
+          codiy/${{ github.event.inputs.location }}:latest
