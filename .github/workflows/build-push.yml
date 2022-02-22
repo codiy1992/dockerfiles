@@ -17,8 +17,8 @@ on:
         default: ''
       readme_filepath:
         description: 'Specify README.md file location'
-        required: false
-        default: './README.md'
+        required: true
+        default: 'README.md'
 
 jobs:
   publish:
@@ -57,4 +57,4 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: codiy/${{ github.event.inputs.context }}
         short-description: ${{ github.event.inputs.description }}
-        readme-filepath: ${{ github.event.inputs.readme_filepath }}
+        readme-filepath: ${{ github.event.inputs.context }}/${{ github.event.inputs.readme_filepath }}
