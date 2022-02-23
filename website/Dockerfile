@@ -188,6 +188,7 @@ COPY resty/sites.d/laravel.conf /usr/local/openresty/nginx/conf/sites.d/default.
 COPY supervisor.d/init.conf /etc/supervisor/conf.d/init.conf
 COPY supervisor.d/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY supervisor.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
+COPY supervisor.d/crontab.conf /etc/supervisor/conf.d/crontab.conf
 
 ARG BUILD_ENV
 ENV ENV=${BUILD_ENV:-production}

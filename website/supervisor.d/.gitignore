@@ -4,3 +4,4 @@
 !nginx.conf
 !php-fpm.conf
 !laravel.conf
+!crontab.conf
