@@ -68,7 +68,7 @@ RUN if [ "${PROTOBUF_VERSION}" != "" ]; then \
 # Install imagick extension
 ARG IMAGICK_VERSION=
 RUN if [ "${IMAGICK_VERSION}" != "" ]; then \
-    apt-get install -y git libmagickwand-dev --no-install-recommends && \
+    apt-get install -y libmagickwand-dev --no-install-recommends && \
     pecl install imagick-${IMAGICK_VERSION} && \
     docker-php-ext-enable imagick \
 ;fi
