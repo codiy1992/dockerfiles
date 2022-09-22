@@ -1,7 +1,7 @@
 
 FROM amd64/alpine:latest
 
-ARG FRP_VERSIIN
+ARG FRP_VERSION
 ENV FRP_VERSION ${FRP_VERSION:-0.37.1}
 
 RUN cd /root \
