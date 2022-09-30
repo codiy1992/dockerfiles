@@ -220,6 +220,7 @@ RUN if [ ${WITH_NEWRELIC} = false ]; then \
 
 RUN mkdir -p /data
 RUN chown -R www-data.www-data /data
+RUN echo 'umask 0000' >> /root/.bashrc
 
 # ------------------------------------------------------------------------
 # Start Services
