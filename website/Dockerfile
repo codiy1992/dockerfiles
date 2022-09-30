@@ -117,7 +117,7 @@ RUN apt-get -y install --no-install-recommends wget gnupg ca-certificates
 RUN wget --no-check-certificate -O - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
 RUN apt-get -y install --no-install-recommends software-properties-common
 RUN codename=`grep -Po 'VERSION="[0-9]+ \(\K[^)]+' /etc/os-release` && \
-    arch=$(arch | sed s/aarch64/arm64\// | sed s/x86_64//) && \
+    arch=$(arch | sed s/aarch64/arm64\\// | sed s/x86_64//) && \
     echo "deb http://openresty.org/package/${arch}debian $codename openresty" \
     | sudo tee /etc/apt/sources.list.d/openresty.list
 RUN apt-get update && apt-get -y install openresty
