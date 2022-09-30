@@ -82,6 +82,8 @@ RUN if [ "${YAF_VERSION}" != "" ]; then \
 ;fi
 
 # Install newrelic extension
+# Arm64 not supported yet
+# @link https://docs.newrelic.com/docs/apm/agents/php-agent/installation/php-agent-installation-arm64/
 ARG WITH_NEWRELIC=false
 RUN if [ ${WITH_NEWRELIC} = true ]; then \
     apt-get install -y wget sudo gnupg2 && \
@@ -89,7 +91,7 @@ RUN if [ ${WITH_NEWRELIC} = true ]; then \
     sudo sh -c 'echo "deb http://apt.newrelic.com/debian/ newrelic non-free" \
     	> /etc/apt/sources.list.d/newrelic.list' && \
     sudo apt-get update && \
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y newrelic-php5 && \
+    sudo apt-get install -y newrelic-php5 && \
     sudo newrelic-install install \
 ;fi
 
