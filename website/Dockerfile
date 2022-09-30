@@ -97,12 +97,12 @@ RUN if [ ${WITH_NEWRELIC} = true ]; then \
 # See: https://getcomposer.org/download/
 # ------------------------------------------------------------------------
 ARG COMPOSER_VERSION=
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN if [ "${COMPOSER_VERSION}" != "" ]; then \
-    php composer-setup.php --version=${COMPOSER_VERSION} \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --version=${COMPOSER_VERSION} && \
+    php -r "unlink('composer-setup.php');" && \
+    mv composer.phar /usr/local/bin/composer \
 ;fi
-RUN php -r "unlink('composer-setup.php');"
-RUN mv composer.phar /usr/local/bin/composer
 
 # ------------------------------------------------------------------------
 # Install openresty
