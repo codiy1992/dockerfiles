@@ -125,10 +125,10 @@ RUN codename=`grep -Po 'VERSION="[0-9]+ \(\K[^)]+' /etc/os-release` && \
 RUN apt-get update && apt-get -y install openresty
 
 # ------------------------------------------------------------------------
-# Install openresty lua package: lua-resty-jwt
-# See: https://github.com/SkyLothar/lua-resty-jwt
+# Install openresty lua package: lua-resty-waf
+# See: https://github.com/codiy1992/lua-resty-waf
 # ------------------------------------------------------------------------
-RUN opm get SkyLothar/lua-resty-jwt
+RUN opm get codiy1992/lua-resty-waf >=1.0
 
 # ------------------------------------------------------------------------
 # Install tls certificates
@@ -187,9 +187,8 @@ RUN rm -fr /usr/local/etc/php-fpm.d/*
 COPY php /usr/local/etc/php
 COPY php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY php-fpm.d /usr/local/etc/php-fpm.d
-COPY resty/lua /usr/local/openresty/nginx/lua
-COPY resty/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
-COPY resty/sites.d/laravel.conf /usr/local/openresty/nginx/conf/sites.d/default.conf
+COPY nginx/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY nginx/sites.d/laravel.conf /usr/local/openresty/nginx/conf/sites.d/default.conf
 COPY supervisor.d/init.conf /etc/supervisor/conf.d/init.conf
 COPY supervisor.d/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY supervisor.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
