@@ -128,7 +128,10 @@ RUN apt-get update && apt-get -y install openresty
 # Install openresty lua package: lua-resty-waf
 # See: https://github.com/codiy1992/lua-resty-waf
 # ------------------------------------------------------------------------
-RUN opm get codiy1992/lua-resty-waf=1.1.0
+ARG RESTY_WAF_VERSION=
+RUN if [ "${RESTY_WAF_VERSION}" != "" ]; then \
+    opm get codiy1992/lua-resty-waf=${RESTY_WAF_VERSION} \
+;fi
 
 # ------------------------------------------------------------------------
 # Install tls certificates
