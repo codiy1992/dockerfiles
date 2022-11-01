@@ -176,7 +176,7 @@ RUN if [ "${GOCRON_VERSION}" != "" ]; then \
     wget -O  gocron.tar.gz \
     https://github.com/codiy1992/gocron/releases/download/v${GOCRON_VERSION}/gocron-v${GOCRON_VERSION}-linux-${arch}.tar.gz && \
     tar zxf gocron.tar.gz && \
-    mv gocron-linux-{$arch}/gocron* /usr/bin/ && \
+    mv gocron-linux-${arch}/gocron* /usr/bin/ && \
     wget -O  gocron-node.tar.gz \
     https://github.com/codiy1992/gocron/releases/download/v${GOCRON_VERSION}/gocron-node-v${GOCRON_VERSION}-linux-${arch}.tar.gz && \
     tar zxf gocron-node.tar.gz && \
