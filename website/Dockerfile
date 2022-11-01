@@ -172,14 +172,15 @@ RUN if [ ${WITH_PY_MODULES} = true ]; then \
 # ------------------------------------------------------------------------
 ARG GOCRON_VERSION=
 RUN if [ "${GOCRON_VERSION}" != "" ]; then \
+    arch=$(arch | sed s/aarch64/arm64\\// | sed s/x86_64/amd64/) && \
     wget -O  gocron.tar.gz \
-    https://github.com/ouqiang/gocron/releases/download/${GOCRON_VERSION}/gocron-${GOCRON_VERSION}-linux-amd64.tar.gz && \
+    https://github.com/codiy1992/gocron/releases/download/v${GOCRON_VERSION}/gocron-v${GOCRON_VERSION}-linux-${arch}.tar.gz && \
     tar zxf gocron.tar.gz && \
-    mv gocron-linux-amd64/gocron* /usr/bin/ && \
+    mv gocron-linux-{$arch}/gocron* /usr/bin/ && \
     wget -O  gocron-node.tar.gz \
-    https://github.com/ouqiang/gocron/releases/download/${GOCRON_VERSION}/gocron-node-${GOCRON_VERSION}-linux-amd64.tar.gz && \
+    https://github.com/codiy1992/gocron/releases/download/v${GOCRON_VERSION}/gocron-node-v${GOCRON_VERSION}-linux-${arch}.tar.gz && \
     tar zxf gocron-node.tar.gz && \
-    mv gocron-node-linux-amd64/gocron* /usr/bin/ \
+    mv gocron-node-linux-${arch}/gocron* /usr/bin/ \
 ;fi
 
 # ------------------------------------------------------------------------
