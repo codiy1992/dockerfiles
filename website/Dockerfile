@@ -172,7 +172,7 @@ RUN if [ ${WITH_PY_MODULES} = true ]; then \
 # ------------------------------------------------------------------------
 ARG GOCRON_VERSION=
 RUN if [ "${GOCRON_VERSION}" != "" ]; then \
-    arch=$(arch | sed s/aarch64/arm64\\// | sed s/x86_64/amd64/) && \
+    arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
     wget -O  gocron.tar.gz \
     https://github.com/codiy1992/gocron/releases/download/v${GOCRON_VERSION}/gocron-v${GOCRON_VERSION}-linux-${arch}.tar.gz && \
     tar zxf gocron.tar.gz && \
