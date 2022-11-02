@@ -1,5 +1,5 @@
 ARG BUILD_PHP_VERSION
-FROM php:${BUILD_PHP_VERSION:-8.0.3}-fpm-buster
+FROM php:${BUILD_PHP_VERSION:-8.1.12}-fpm-bullseye
 
 # ------------------------------------------------------------------------
 # Install requirements
