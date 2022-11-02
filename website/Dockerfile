@@ -1,5 +1,6 @@
+ARG DISTRO
 ARG BUILD_PHP_VERSION
-FROM php:${BUILD_PHP_VERSION:-8.1.12}-fpm-bullseye
+FROM php:${BUILD_PHP_VERSION:-8.1.12}-fpm-${DISTRO:-buster}
 
 # ------------------------------------------------------------------------
 # Install requirements
