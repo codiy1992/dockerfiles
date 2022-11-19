@@ -12,5 +12,5 @@ HOME=/data
 # |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
 # |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
 # |  |  |  |  |
-# *  *  *  *  * user-name command to be executed
-*  *  *  *  * root echo `date` > /tmp/system_crontab.log && umask 0000 && php /data/artisan schedule:run >> /tmp/system_crontab.log
+# *  *  *  *  * command to be executed
+*  *  *  *  * echo `date` > /tmp/system_crontab.log && umask 0000 && php /data/artisan schedule:run >> /tmp/system_crontab.log
