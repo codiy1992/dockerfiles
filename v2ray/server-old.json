@@ -4,6 +4,36 @@
     },
     "inbounds": [
         {
+            "port": 443,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "OxprCzKv7yxGz0i7",
+                        "email": "wangle"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": ["http/1.1"],
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/nginx/certs/DOMAIN/fullchain.cer",
+                            "keyFile": "/etc/nginx/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "listen": "0.0.0.0",
             "port": 4433,
             "tag": "ss",
@@ -94,6 +124,31 @@
                             }
                         }
                     }
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 6789,
+            "tag": "tcp_tls",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/nginx/certs/DOMAIN/fullchain.cer",
+                            "keyFile": "/etc/nginx/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
                 }
             }
         }
