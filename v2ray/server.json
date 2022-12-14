@@ -19,6 +19,22 @@
         {
             "listen": "0.0.0.0",
             "port": 10001,
+            "tag": "ss_grpc",
+            "protocol": "shadowsocks",
+            "settings": {
+                "method": "chacha20-ietf-poly1305",
+                "password": "GsH0P3BYMvayzuMK"
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "931c89af-a362-44c5-80d2-bda173592f68"
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 10002,
             "tag": "ss_ws_need_work_with_web_tls",
             "protocol": "shadowsocks",
             "settings": {
@@ -27,7 +43,7 @@
             },
             "streamSettings": {
                 "network": "ws",
-                "path": "/freedom"
+                "path": "/ss_ws"
             }
         },
         {
@@ -193,7 +209,7 @@
                         "static.awsevents.cn",
                         "merak.alicdn.com"
                     ],
-                    "path": "/fredom"
+                    "path": "/h2_tls"
                 },
                 "security": "tls",
                 "tlsSettings": {
@@ -222,7 +238,7 @@
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "/freedom"
+                    "path": "/ws"
                 }
             }
         },
