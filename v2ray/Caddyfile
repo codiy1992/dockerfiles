@@ -1,4 +1,8 @@
-{$HTTPS_DOMAIN}:443 {
+{$DOMAIN}:80 {
+    redir {$DOMAIN}:443
+}
+
+{$DOMAIN}:443 {
     log {
         level INFO
         output file {$LOG_FILE} {
@@ -17,7 +21,7 @@
         }
     }
 
-    root /data/public
+    root * /data/public
 
     reverse_proxy 127.0.0.1:6787
 }
