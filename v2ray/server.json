@@ -5,7 +5,7 @@
     "inbounds": [
         {
             "listen": "0.0.0.0",
-            "port": 4433,
+            "port": 10000,
             "tag": "ss",
             "protocol": "shadowsocks",
             "settings": {
@@ -18,7 +18,52 @@
         },
         {
             "listen": "0.0.0.0",
-            "port": 6787,
+            "port": 10001,
+            "tag": "ss_ws_need_work_with_web_tls",
+            "protocol": "shadowsocks",
+            "settings": {
+                "method": "chacha20-ietf-poly1305",
+                "password": "GsH0P3BYMvayzuMK"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "path": "/freedom"
+            }
+        },
+        {
+            "port": 11000,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "OxprCzKv7yxGz0i7",
+                        "email": "wangle"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": ["http/1.1"],
+                    "serverName": "DOMAIN",
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.crt",
+                            "keyFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 12000,
             "tag": "tcp_bare",
             "protocol": "vmess",
             "settings": {
@@ -44,7 +89,33 @@
         },
         {
             "listen": "0.0.0.0",
-            "port": 6788,
+            "port": 12001,
+            "tag": "tcp_tls",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "serverName": "DOMAIN",
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.crt",
+                            "keyFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 12002,
             "tag": "tcp_http_mask",
             "protocol": "vmess",
             "settings": {
@@ -67,8 +138,11 @@
                             "path": ["/", "/video"],
                             "headers": {
                                 "Host": [
-                                    "git.wangle.ltd",
-                                    "static.yahabibiy.com"
+                                    "cm.bilibili.com",
+                                    "data.bilibili.com",
+                                    "pcsdata.baidu.com",
+                                    "static.awsevents.cn",
+                                    "merak.alicdn.com"
                                 ],
                                 "User-Agent": [
                                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36",
@@ -99,8 +173,8 @@
         },
         {
             "listen": "0.0.0.0",
-            "port": 6789,
-            "tag": "tcp_tls",
+            "port": 12100,
+            "tag": "h2_tls",
             "protocol": "vmess",
             "settings": {
                 "clients": [
@@ -110,9 +184,20 @@
                 ]
             },
             "streamSettings": {
-                "network": "tcp",
+                "network": "h2",
+                "httpSettings": {
+                    "host": [
+                        "cm.bilibili.com",
+                        "data.bilibili.com",
+                        "pcsdata.baidu.com",
+                        "static.awsevents.cn",
+                        "merak.alicdn.com"
+                    ],
+                    "path": "/fredom"
+                },
                 "security": "tls",
                 "tlsSettings": {
+                    "serverName": "DOMAIN",
                     "certificates": [
                         {
                             "certificateFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.crt",
@@ -123,32 +208,77 @@
             }
         },
         {
-            "port": 6790,
-            "protocol": "trojan",
+            "listen": "0.0.0.0",
+            "port": 12200,
+            "tag": "ws",
+            "protocol": "vmess",
             "settings": {
                 "clients": [
                     {
-                        "password": "OxprCzKv7yxGz0i7",
-                        "email": "wangle"
-                    }
-                ],
-                "fallbacks": [
-                    {
-                        "dest": 80
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
                     }
                 ]
             },
             "streamSettings": {
-                "network": "tcp",
+                "network": "ws",
+                "wsSettings": {
+                    "path": "/freedom"
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 12201,
+            "tag": "ws_tls",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
                 "security": "tls",
                 "tlsSettings": {
-                    "alpn": ["http/1.1"],
+                    "serverName": "DOMAIN",
                     "certificates": [
                         {
                             "certificateFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.crt",
                             "keyFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.key"
                         }
                     ]
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 12300,
+            "tag": "grpc",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "security": "tls",
+                "tlsSettings": {
+                    "serverName": "DOMAIN",
+                    "alpn": ["h2"],
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.crt",
+                            "keyFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                },
+                "grpcSettings": {
+                    "serviceName": "931c89af-a362-44c5-80d2-bda173592f68"
                 }
             }
         }
