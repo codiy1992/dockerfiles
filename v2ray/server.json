@@ -121,6 +121,36 @@
                     ]
                 }
             }
+        },
+        {
+            "port": 6790,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "OxprCzKv7yxGz0i7",
+                        "email": "wangle"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": ["http/1.1"],
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.crt",
+                            "keyFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                }
+            }
         }
     ],
     "outbounds": [
