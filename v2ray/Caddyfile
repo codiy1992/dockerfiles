@@ -16,5 +16,8 @@
             secret_access_key {$AWS_SECRET_ACCESS_KEY}
         }
     }
+
+    root /data/public
+
     reverse_proxy 127.0.0.1:6787
 }
