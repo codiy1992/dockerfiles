@@ -1,6 +1,6 @@
 {
     "log": {
-        "loglevel": "warning"
+        "loglevel": "error"
     },
     "inbounds": [
         {
@@ -230,6 +230,34 @@
         {
             "listen": "0.0.0.0",
             "port": 12100,
+            "tag": "h2_better_work_with_web_tls",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "email": "h2_bare",
+                        "id": "931c89af-a362-44c5-80d2-bda173592f68"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "h2",
+                "security": "none",
+                "httpSettings": {
+                    "host": [
+                        "cm.bilibili.com",
+                        "data.bilibili.com",
+                        "pcsdata.baidu.com",
+                        "static.awsevents.cn",
+                        "merak.alicdn.com"
+                    ],
+                    "path": "/h2_tls"
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 12101,
             "tag": "h2_tls",
             "protocol": "vmess",
             "settings": {
@@ -242,6 +270,7 @@
             },
             "streamSettings": {
                 "network": "h2",
+                "security": "tls",
                 "httpSettings": {
                     "host": [
                         "cm.bilibili.com",
@@ -252,7 +281,6 @@
                     ],
                     "path": "/h2_tls"
                 },
-                "security": "tls",
                 "tlsSettings": {
                     "serverName": "DOMAIN",
                     "certificates": [
