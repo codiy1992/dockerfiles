@@ -47,7 +47,9 @@
             }
         },
         {
+            "listen": "0.0.0.0",
             "port": 11000,
+            "tag": "trojan",
             "protocol": "trojan",
             "settings": {
                 "clients": [
@@ -79,6 +81,42 @@
         },
         {
             "listen": "0.0.0.0",
+            "port": 11001,
+            "tag": "trojan_grpc",
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "OxprCzKv7yxGz0i7",
+                        "email": "wangle"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": ["h2"],
+                    "serverName": "DOMAIN",
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.crt",
+                            "keyFile": "/etc/v2ray/certs/DOMAIN/DOMAIN.key"
+                        }
+                    ]
+                },
+                "grpcSettings": {
+                    "serviceName": "931c89af-a362-44c5-80d2-bda173592f68"
+                }
+            }
+        },
+        {
+            "listen": "0.0.0.0",
             "port": 12000,
             "tag": "tcp_bare",
             "protocol": "vmess",
@@ -87,7 +125,7 @@
                     {
                         "id": "931c89af-a362-44c5-80d2-bda173592f68",
                         "level": 0,
-                        "email": "wangle",
+                        "email": "tcp_bare",
                         "alterId": 0
                     }
                 ]
@@ -111,6 +149,7 @@
             "settings": {
                 "clients": [
                     {
+                        "email": "tcp_tls",
                         "id": "931c89af-a362-44c5-80d2-bda173592f68"
                     }
                 ]
@@ -137,6 +176,7 @@
             "settings": {
                 "clients": [
                     {
+                        "email": "tcp_http_mask",
                         "id": "931c89af-a362-44c5-80d2-bda173592f68"
                     }
                 ]
@@ -195,6 +235,7 @@
             "settings": {
                 "clients": [
                     {
+                        "email": "h2_tls",
                         "id": "931c89af-a362-44c5-80d2-bda173592f68"
                     }
                 ]
@@ -226,11 +267,12 @@
         {
             "listen": "0.0.0.0",
             "port": 12200,
-            "tag": "ws",
+            "tag": "ws_better_work_with_web_tls",
             "protocol": "vmess",
             "settings": {
                 "clients": [
                     {
+                        "email": "ws_bare",
                         "id": "931c89af-a362-44c5-80d2-bda173592f68"
                     }
                 ]
@@ -250,6 +292,7 @@
             "settings": {
                 "clients": [
                     {
+                        "email": "ws_tls",
                         "id": "931c89af-a362-44c5-80d2-bda173592f68"
                     }
                 ]
@@ -276,6 +319,7 @@
             "settings": {
                 "clients": [
                     {
+                        "email": "grpc",
                         "id": "931c89af-a362-44c5-80d2-bda173592f68"
                     }
                 ]
@@ -301,7 +345,24 @@
     ],
     "outbounds": [
         {
-            "protocol": "freedom"
+            "protocol": "freedom",
+            "settings": {},
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "settings": {},
+            "tag": "blocked"
         }
-    ]
+    ],
+    "routing": {
+        "domainStrategy": "AsIs",
+        "rules": [
+            {
+                "type": "field",
+                "ip": ["geoip:private"],
+                "outboundTag": "block"
+            }
+        ]
+    }
 }
