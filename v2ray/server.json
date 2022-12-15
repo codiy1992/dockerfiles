@@ -251,7 +251,7 @@
                         "static.awsevents.cn",
                         "merak.alicdn.com"
                     ],
-                    "path": "/h2_tls"
+                    "path": "/h2_bare"
                 }
             }
         },
