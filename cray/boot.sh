@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+if [[ -f /etc/cray/hooks/before_booting.sh ]]; then
+    /bin/sh /etc/cray/hooks/before_booting.sh
+fi
+
 /usr/bin/supervisorctl start caddy > /dev/null
 
 ACME_WATING_SECONDS=${ACME_WATING_SECONDS:-180}
@@ -28,6 +32,7 @@ fi
 /usr/bin/supervisorctl start xray > /dev/null
 
 if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
+    echo "Creating DNS Record ${DOMAIN} -> ${IPV4_ADDRESS}:"
     echo $(curl -s --request POST \
       --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
       --header 'Content-Type: application/json' \
@@ -45,6 +50,7 @@ fi
 
 ACME_CERT_FILE_CDN=/data/caddy/certificates/${ACME_DIR}/${DOMAIN_CDN}/${DOMAIN_CDN}.crt
 if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN} ]]; then
+    echo "Creating DNS Record ${DOMAIN} -> ${IPV4_ADDRESS}:"
     echo $(curl -s --request POST \
       --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
       --header 'Content-Type: application/json' \
@@ -111,10 +117,15 @@ if [[ ${CLOUDFLARE_ZONE_ID} && "${IPV4_ADDRESS}" != "${IPV4_OLD}" && "${IPV4_OLD
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
 
+    echo "Deleting former DNS Records:"
     RECORD_IDS=$(json_parse $RESULT "id")
     for RECORD_ID in ${RECORD_IDS}; do
         echo $(curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${RECORD_ID//\"/}" \
          -H "Content-Type: application/json" \
          -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
     done
+fi
+
+if [[ -f /etc/cray/hooks/after_booted.sh ]]; then
+    /bin/sh /etc/cray/hooks/after_booted.sh
 fi

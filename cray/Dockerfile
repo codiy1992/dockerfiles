@@ -29,6 +29,7 @@ RUN apk add --no-cache curl tzdata openssl supervisor ca-certificates
 COPY supervisor.d/cray.ini /etc/supervisor.d/cray.ini
 COPY v2ray.json /etc/cray/v2ray.json
 COPY xray.json /etc/cray/xray.json
+COPY hooks /etc/cray/hooks
 
 COPY boot.sh /etc/cray/boot.sh
 COPY v2ray.sh /etc/cray/v2ray.sh
