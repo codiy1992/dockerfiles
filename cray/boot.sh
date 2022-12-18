@@ -28,7 +28,7 @@ fi
 /usr/bin/supervisorctl start xray > /dev/null
 
 if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
-    curl -s --request POST \
+    echo $(curl -s --request POST \
       --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
       --header 'Content-Type: application/json' \
       --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
@@ -40,12 +40,12 @@ if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
         \"priority\": 10, \
         \"proxied\": false, \
         \"ttl\": 1  \
-    }"
+    }")
 fi
 
 ACME_CERT_FILE_CDN=/data/caddy/certificates/${ACME_DIR}/${DOMAIN_CDN}/${DOMAIN_CDN}.crt
 if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN} ]]; then
-    curl -s --request POST \
+    echo $(curl -s --request POST \
       --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
       --header 'Content-Type: application/json' \
       --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
@@ -57,7 +57,7 @@ if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN}
         \"priority\": 10, \
         \"proxied\": true, \
         \"ttl\": 1  \
-    }"
+    }")
 fi
 
 # Automatically Remove Old DNS records when CLOUDFLARE_ZONE_ID environment variable is set.
@@ -107,14 +107,14 @@ function json_parse() {
 }
 
 if [[ ${CLOUDFLARE_ZONE_ID} && "${IPV4_ADDRESS}" != "${IPV4_OLD}" && "${IPV4_OLD}" != "" ]]; then
-    RESULT=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records?type=A&content=${IPV4_OLD}&match=all&comment=Automatically Created by Cray" \
+    RESULT=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records?type=A&content=${IPV4_OLD}&match=all" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
 
     RECORD_IDS=$(json_parse $RESULT "id")
     for RECORD_ID in ${RECORD_IDS}; do
-        curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${RECORD_ID}" \
+        echo $(curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${RECORD_ID//\"/}" \
          -H "Content-Type: application/json" \
-         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"
+         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
     done
 fi
