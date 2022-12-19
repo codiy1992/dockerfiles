@@ -6,7 +6,7 @@ ACME_CERT_FILE=/data/caddy/certificates/${ACME_DIR}/${DOMAIN}/${DOMAIN}.crt
 ACME_CERT_FILE_CDN=/data/caddy/certificates/${ACME_DIR}/${DOMAIN_CDN}/${DOMAIN_CDN}.crt
 
 if [[ -f /etc/cray/xray.json ]] && [[ -f ${ACME_CERT_FILE} || -f ${ACME_CERT_FILE_CDN} ]]; then
-    cp /etc/cray/xray.json /etc/xray/config.json
+    sed '/^[[:blank:]]*\/\//d;s/\/\/.*//' /etc/cray/xray.json > /etc/xray/config.json
     sed -i "s/ACME_DIR/${ACME_DIR}/g" /etc/xray/config.json
 fi
 
