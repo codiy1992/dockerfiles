@@ -27,9 +27,17 @@ if [[ "${DOMAIN_CDN}" != "" ]]; then
     done
 fi
 
-/usr/bin/supervisorctl start v2ray > /dev/null
+if [[ ! ${WITHOU_V2RAY} ]]; then
+    /usr/bin/supervisorctl start v2ray > /dev/null
+fi
 
-/usr/bin/supervisorctl start xray > /dev/null
+if [[ ! ${WITHOU_XRAY} ]]; then
+    /usr/bin/supervisorctl start xray > /dev/null
+fi
+
+if [[ ! ${WITHOU_SHADOWSOCKS} ]]; then
+    /usr/bin/supervisorctl start shadowsocks > /dev/null
+fi
 
 if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
     echo "Creating DNS Record ${DOMAIN} -> ${IPV4_ADDRESS}:"

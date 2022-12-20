@@ -1,0 +1,12 @@
+{
+    "server": "0.0.0.0",
+    "nameserver": "8.8.8.8",
+    "server_port": 4433,
+    "password": "GsH0P3BYMvayzuMK",
+    "method": "chacha20-ietf-poly1305",
+    "timeout": 400,
+    "no_delay": true,
+    "mode": "tcp_and_udp",
+    "plugin": "v2ray-plugin",
+    "plugin_opts": "server;"
+}
