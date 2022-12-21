@@ -73,7 +73,7 @@ COPY shadowsocks.json /etc/shadowsocks-rust/config.json
 COPY boot.sh /etc/crazy/boot.sh
 COPY v2ray.sh /etc/crazy/v2ray.sh
 COPY xray.sh /etc/crazy/xray.sh
-COPY shadowsocks.sh /etc/crazy/shadowsocks.sh
+COPY ssserver.sh /etc/crazy/ssserver.sh
 
 WORKDIR /etc/crazy
 

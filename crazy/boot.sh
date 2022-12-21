@@ -36,7 +36,7 @@ if [[ ! ${WITHOUT_XRAY} ]]; then
 fi
 
 if [[ ! ${WITHOUT_SHADOWSOCKS} ]]; then
-    /usr/bin/supervisorctl start shadowsocks > /dev/null
+    /usr/bin/supervisorctl start ssserver > /dev/null
 fi
 
 if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
