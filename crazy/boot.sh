@@ -27,15 +27,15 @@ if [[ "${DOMAIN_CDN}" != "" ]]; then
     done
 fi
 
-if [[ ! ${WITHOU_V2RAY} ]]; then
+if [[ ! ${WITHOUT_V2RAY} ]]; then
     /usr/bin/supervisorctl start v2ray > /dev/null
 fi
 
-if [[ ! ${WITHOU_XRAY} ]]; then
+if [[ ! ${WITHOUT_XRAY} ]]; then
     /usr/bin/supervisorctl start xray > /dev/null
 fi
 
-if [[ ! ${WITHOU_SHADOWSOCKS} ]]; then
+if [[ ! ${WITHOUT_SHADOWSOCKS} ]]; then
     /usr/bin/supervisorctl start shadowsocks > /dev/null
 fi
 
