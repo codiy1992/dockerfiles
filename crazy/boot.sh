@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-if [[ -f /etc/cray/hooks/before_booting.sh ]]; then
-    /bin/sh /etc/cray/hooks/before_booting.sh
+if [[ -f /etc/crazy/hooks/before_booting.sh ]]; then
+    /bin/sh /etc/crazy/hooks/before_booting.sh
 fi
 
 /usr/bin/supervisorctl start caddy > /dev/null
@@ -13,7 +13,7 @@ if [[ "${DOMAIN}" != "" ]]; then
     ACME_CERT_FILE=/data/caddy/certificates/${ACME_DIR}/${DOMAIN}/${DOMAIN}.crt
     WAITING=0
     while [[ ! -f ${ACME_CERT_FILE}  && $WAITING -lt $ACME_WATING_SECONDS ]]; do
-        echo "[cray] Wating Acme Certificate (${WAITING}): ${DOMAIN}"; sleep 5;
+        echo "[crazy] Wating Acme Certificate (${WAITING}): ${DOMAIN}"; sleep 5;
         WAITING=$((WAITING+5))
     done
 fi
@@ -22,7 +22,7 @@ if [[ "${DOMAIN_CDN}" != "" ]]; then
     ACME_CERT_FILE=/data/caddy/certificates/${ACME_DIR}/${DOMAIN_CDN}/${DOMAIN_CDN}.crt
     WAITING=0
     while [[ ! -f ${ACME_CERT_FILE}  && $WAITING -lt $ACME_WATING_SECONDS ]]; do
-        echo "[cray] Wating Acme Certificate (${WAITING}): ${DOMAIN_CDN}"; sleep 5;
+        echo "[crazy] Wating Acme Certificate (${WAITING}): ${DOMAIN_CDN}"; sleep 5;
         WAITING=$((WAITING+5))
     done
 fi
@@ -47,7 +47,7 @@ if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
       --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
       --data "{ \
         \"type\": \"A\", \
-        \"comment\": \"Automatically Created by Cray\", \
+        \"comment\": \"Automatically Created by crazy\", \
         \"content\": \"${IPV4_ADDRESS}\", \
         \"name\": \"${DOMAIN}\", \
         \"priority\": 10, \
@@ -65,7 +65,7 @@ if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN}
       --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
       --data "{ \
         \"type\": \"A\", \
-        \"comment\": \"Automatically Created by Cray\", \
+        \"comment\": \"Automatically Created by crazy\", \
         \"content\": \"${IPV4_ADDRESS}\", \
         \"name\": \"${DOMAIN_CDN}\", \
         \"priority\": 10, \
@@ -134,6 +134,6 @@ if [[ ${CLOUDFLARE_ZONE_ID} && "${IPV4_ADDRESS}" != "${IPV4_OLD}" && "${IPV4_OLD
     done
 fi
 
-if [[ -f /etc/cray/hooks/after_booted.sh ]]; then
-    /bin/sh /etc/cray/hooks/after_booted.sh
+if [[ -f /etc/crazy/hooks/after_booted.sh ]]; then
+    /bin/sh /etc/crazy/hooks/after_booted.sh
 fi
