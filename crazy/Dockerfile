@@ -66,12 +66,15 @@ RUN apk add --no-cache curl tzdata openssl supervisor ca-certificates
 COPY supervisor.d/crazy.ini /etc/supervisor.d/crazy.ini
 COPY v2ray.json /etc/crazy/v2ray.json
 COPY xray.json /etc/crazy/xray.json
-COPY shadowsocks.json /etc/shadowsocks-rust/config.json
 COPY hooks /etc/crazy/hooks
+COPY shadowsocks.json /etc/crazy/shadowsocks.json
+COPY shadowsocks.json /etc/shadowsocks-rust/config.json
 
 COPY boot.sh /etc/crazy/boot.sh
 COPY v2ray.sh /etc/crazy/v2ray.sh
 COPY xray.sh /etc/crazy/xray.sh
 COPY shadowsocks.sh /etc/crazy/shadowsocks.sh
+
+WORKDIR /etc/crazy
 
 ENTRYPOINT ["/usr/bin/supervisord", "--nodaemon"]
