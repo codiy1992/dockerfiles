@@ -67,6 +67,7 @@ COPY supervisor.d/crazy.ini /etc/supervisor.d/crazy.ini
 COPY v2ray.json /etc/crazy/v2ray.json
 COPY xray.json /etc/crazy/xray.json
 COPY hooks /etc/crazy/hooks
+COPY scripts /etc/crazy/scripts
 COPY shadowsocks.json /etc/crazy/shadowsocks.json
 COPY shadowsocks.json /etc/shadowsocks-rust/config.json
 
