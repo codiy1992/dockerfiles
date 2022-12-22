@@ -45,7 +45,7 @@ if [[ ${CLOUDFLARE_ZONE_ID} && "${IPV4_ADDRESS}" != "${IPV4_OLD}" && "${IPV4_OLD
      -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
 
     echo "Deleting former DNS Records:"
-    RECORD_IDS=$(json_parse $RESULT "id")
+    RECORD_IDS=$(json_parse "$RESULT" "id")
     for RECORD_ID in ${RECORD_IDS}; do
         echo $(curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${RECORD_ID//\"/}" \
          -H "Content-Type: application/json" \
@@ -55,7 +55,7 @@ fi
 
 
 # Cloudflare Worker
-if [[ ! ${WITHOUT_CLOUDFLARE_WORKER} ]] && [[ ${CLOUDFLARE_ACCOUNT_ID} && ${CLOUDFLARE_ZONE_NAME} ]]; then
+if [[ ${CLOUDFLARE_ACCOUNT_ID} && ${CLOUDFLARE_ZONE_NAME} ]]; then
     SCRIPT_NAME="w${IPV4_NAME}"
     HOSTNAME="${SCRIPT_NAME}.${CLOUDFLARE_ZONE_NAME}"
     SCRIPT_NAME_OLD="w${IPV4_OLD//./}"
@@ -82,31 +82,31 @@ if [[ ! ${WITHOUT_CLOUDFLARE_WORKER} ]] && [[ ${CLOUDFLARE_ACCOUNT_ID} && ${CLOU
       -H 'Content-Type: application/javascript' \
       --data "${SCRIPT_CONTENT}")
 
-    # Create Domain Route
     # Attach to Domain
-    # echo $(curl -s -X PUT "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains" \
-    #   -H 'Content-Type: application/json' \
-    #   -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-    #   --data "{ \
-    #     \"zone_id\": \"${CLOUDFLARE_ZONE_ID}\", \
-    #     \"hostname\": \"${HOSTNAME}\", \
-    #     \"service\": \"${SCRIPT_NAME}\", \
-    #     \"environment\": \"production\" \
-    # }")
+    echo $(curl -s -X PUT "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains" \
+      -H 'Content-Type: application/json' \
+      -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+      --data "{ \
+        \"zone_id\": \"${CLOUDFLARE_ZONE_ID}\", \
+        \"hostname\": \"${HOSTNAME}\", \
+        \"service\": \"${SCRIPT_NAME}\", \
+        \"environment\": \"production\" \
+    }")
+
+    # Query Old Domain Record
+    RESULT=$(curl -s -X GET "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains?zone_id=${CLOUDFLARE_ZONE_ID}&hostname=${HOSTNAME_OLD}&service=${SCRIPT_NAME_OLD}&environment=production" \
+         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+         -H "Content-Type: application/json")
+    RECORD_ID=$(json_parse "${RESULT}" "id")
+
+    # Detach from Domain
+    echo $(curl -s -X DELETE "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains/${RECORD_ID//\"/}" \
+         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+         -H "Content-Type: application/json")
 
     # Delete Old Script
     echo $(curl -s -X DELETE "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/scripts/${SCRIPT_NAME_OLD}" \
          -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
          -H "Content-Type: application/json")
 
-    # Query Old Domain Record
-    RESULT=$(curl -s -X GET "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains?zone_id=${CLOUDFLARE_ZONE_ID}&hostname=${HOSTNAME_OLD}&service=${SCRIPT_NAME_OLD}&environment=production" \
-         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-         -H "Content-Type: application/json")
-    RECORD_ID=$(json_parse ${RESULT} "id")
-
-    # Detach from Domain
-    echo $(curl -s -X DELETE "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains/${RECORD_ID//\"/}" \
-         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-         -H "Content-Type: application/json")
 fi
