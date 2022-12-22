@@ -76,13 +76,14 @@ if [[ ${CLOUDFLARE_ACCOUNT_ID} && ${CLOUDFLARE_ZONE_NAME} ]]; then
     fi
 
     # Upload Worker Script
-    echo "Uploading Worker Script"
+    echo "Uploading Worker Script:"
     echo $(curl -s -X PUT "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/scripts/${SCRIPT_NAME}" \
       -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
       -H 'Content-Type: application/javascript' \
       --data "${SCRIPT_CONTENT}")
 
     # Attach to Domain
+    echo "Attaching to Domain:"
     echo $(curl -s -X PUT "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains" \
       -H 'Content-Type: application/json' \
       -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
@@ -94,17 +95,20 @@ if [[ ${CLOUDFLARE_ACCOUNT_ID} && ${CLOUDFLARE_ZONE_NAME} ]]; then
     }")
 
     # Query Old Domain Record
+    echo "Quering Old Records ..."
     RESULT=$(curl -s -X GET "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains?zone_id=${CLOUDFLARE_ZONE_ID}&hostname=${HOSTNAME_OLD}&service=${SCRIPT_NAME_OLD}&environment=production" \
          -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
          -H "Content-Type: application/json")
     RECORD_ID=$(json_parse "${RESULT}" "id")
 
     # Detach from Domain
+    echo "Detaching from Domain..."
     echo $(curl -s -X DELETE "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains/${RECORD_ID//\"/}" \
          -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
          -H "Content-Type: application/json")
 
     # Delete Old Script
+    echo "Deleting from Domain..."
     echo $(curl -s -X DELETE "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/scripts/${SCRIPT_NAME_OLD}" \
          -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
          -H "Content-Type: application/json")
