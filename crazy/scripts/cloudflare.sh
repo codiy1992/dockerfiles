@@ -20,9 +20,10 @@ if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
     }")
 fi
 
+ACME_DIR=${ACME_DIR:-'acme-v02.api.letsencrypt.org-directory'}
 ACME_CERT_FILE_CDN=/data/caddy/certificates/${ACME_DIR}/${DOMAIN_CDN}/${DOMAIN_CDN}.crt
 if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN} ]]; then
-    echo "Creating DNS Record ${DOMAIN} -> ${IPV4_ADDRESS}:"
+    echo "Creating DNS Record ${DOMAIN_CDN} -> ${IPV4_ADDRESS}:"
     echo $(curl -s --request POST \
       --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
       --header 'Content-Type: application/json' \
