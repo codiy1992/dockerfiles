@@ -38,7 +38,7 @@ if [[ $? -ne 0 ]]; then
     STACK_STATUS=CREATING
 
     WAITING=0
-    while [[ "${STACK_STATUS//\"/}" != *COMPLETE && ${WAITING} -lt 300 ]]; do
+    while [[ "${STACK_STATUS//\"/}" != *COMPLETE && ${WAITING} -lt 600 ]]; do
         echo "Creating Cloudfront Stack (${WAITING})"; sleep 15;
         STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${STACK_NAME} | jq '.Stacks[0].StackStatus')
         WAITING=$((WAITING+15))
@@ -71,7 +71,7 @@ else
         aws cloudformation execute-change-set --stack-name ${STACK_NAME} --change-set-name ${CHANGE_SET_NAME}
         STACK_STATUS=CREATING
         WAITING=0
-        while [[ "${STACK_STATUS//\"/}" != *COMPLETE && ${WAITING} -lt 300 ]]; do
+        while [[ "${STACK_STATUS//\"/}" != *COMPLETE && ${WAITING} -lt 600 ]]; do
             echo "Updating Cloudfront (${WAITING})"; sleep 10;
             STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${STACK_NAME} | jq '.Stacks[0].StackStatus')
             WAITING=$((WAITING+10))
