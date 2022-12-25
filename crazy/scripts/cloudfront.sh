@@ -9,7 +9,7 @@ if [[ ! ${INSTANCE_ID} ]]; then
 fi
 
 sed '/^[[:blank:]]*#/d;s/#.*//' /etc/crazy/scripts/cfn-cloudfront.yaml > ${CFN_TEMPLATE}
-sed -i "s/SERVER_DOMAIN/${CLOUDFRONT_SERVER_DOMAIN-${DOMAIN}}/g" ${CFN_TEMPLATE}
+sed -i "s/ORIGIN_SERVER/${AWS_CLOUDFRONT_ORIGIN_SERVER-${DOMAIN}}/g" ${CFN_TEMPLATE}
 sed -i "s/INSTANCE_ID/${INSTANCE_ID}/g" ${CFN_TEMPLATE}
 
 # Custom Domain

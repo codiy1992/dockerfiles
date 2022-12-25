@@ -10,17 +10,18 @@ Resources:
         HttpVersion: http2
         IPV6Enabled: True
         DefaultRootObject: index.html
-        Aliases: [ AWS_CLOUDFRONT_ALIAS ]
+        Aliases: [AWS_CLOUDFRONT_ALIAS]
         ViewerCertificate:
-          AcmCertificateArn: !Sub 'arn:aws:acm:us-east-1:${AWS::AccountId}:certificate/AWS_ACM_CERTIFICATE_ID'
-          MinimumProtocolVersion: 'TLSv1'
-          SslSupportMethod: 'sni-only'
+          AcmCertificateArn: !Sub "arn:aws:acm:us-east-1:${AWS::AccountId}:certificate/AWS_ACM_CERTIFICATE_ID"
+          MinimumProtocolVersion: "TLSv1"
+          SslSupportMethod: "sni-only"
         DefaultCacheBehavior:
-          AllowedMethods: ['GET', 'HEAD', 'OPTIONS', 'PUT', 'PATCH', 'POST', 'DELETE']
-          CachedMethods: ['GET', 'HEAD']
-          CachePolicyId: !Ref 'CachePolicy'
-          OriginRequestPolicyId: !Ref 'OriginRequestPolicy'
-          ResponseHeadersPolicyId: !Ref 'ResponseHeadersPolicy'
+          AllowedMethods:
+            ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"]
+          CachedMethods: ["GET", "HEAD"]
+          CachePolicyId: !Ref "CachePolicy"
+          OriginRequestPolicyId: !Ref "OriginRequestPolicy"
+          ResponseHeadersPolicyId: !Ref "ResponseHeadersPolicy"
           Compress: True
           TargetOriginId: site-origin
           ViewerProtocolPolicy: https-only
@@ -28,14 +29,14 @@ Resources:
           - ConnectionAttempts: 3
             ConnectionTimeout: 10
             Id: site-origin
-            DomainName: SERVER_DOMAIN
+            DomainName: ORIGIN_SERVER
             CustomOriginConfig:
               HTTPPort: 80
               HTTPSPort: 443
               OriginKeepaliveTimeout: 5
               OriginProtocolPolicy: https-only
               OriginReadTimeout: 30
-              OriginSSLProtocols: [ TLSv1.2 ]
+              OriginSSLProtocols: [TLSv1.2]
 
   # 缓存策略
   CachePolicy:
@@ -43,7 +44,7 @@ Resources:
     Properties:
       CachePolicyConfig:
         Name: Crazy-CachePolicy-INSTANCE_ID
-        Comment: 'My Cache Policy'
+        Comment: "My Cache Policy"
         DefaultTTL: 86400
         MaxTTL: 31536000
         MinTTL: 1
@@ -63,7 +64,7 @@ Resources:
     Properties:
       OriginRequestPolicyConfig:
         Name: Crazy-OriginRequestPolicy-INSTANCE_ID
-        Comment: 'My Origin Request Policy'
+        Comment: "My Origin Request Policy"
         HeadersConfig:
           HeaderBehavior: whitelist
           Headers:
@@ -106,4 +107,3 @@ Resources:
             Protection: true
             ModeBlock: true
             Override: false
-
