@@ -1,5 +1,4 @@
-. /etc/crazy/scripts/functions.sh
-
+#!/usr/bin/env sh
 CLOUDFLARE_API_ENDPOINT=https://api.cloudflare.com/client/v4
 
 # Automatically Create new DNS Record
@@ -46,7 +45,7 @@ if [[ ${CLOUDFLARE_ZONE_ID} && "${IPV4_ADDRESS}" != "${IPV4_OLD}" && "${IPV4_OLD
      -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
 
     echo "Deleting former DNS Records:"
-    RECORD_IDS=$(json_parse "$RESULT" "id")
+    RECORD_IDS=$(echo "$RESULT" | jq '.result[].id')
     for RECORD_ID in ${RECORD_IDS}; do
         echo $(curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${RECORD_ID//\"/}" \
          -H "Content-Type: application/json" \
@@ -100,7 +99,7 @@ if [[ ${CLOUDFLARE_ACCOUNT_ID} && ${CLOUDFLARE_ZONE_NAME} ]]; then
     RESULT=$(curl -s -X GET "${CLOUDFLARE_API_ENDPOINT}/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains?zone_id=${CLOUDFLARE_ZONE_ID}&hostname=${HOSTNAME_OLD}&service=${SCRIPT_NAME_OLD}&environment=production" \
          -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
          -H "Content-Type: application/json")
-    RECORD_ID=$(json_parse "${RESULT}" "id")
+    RECORD_ID=$(echo "${RESULT}" | jq '.result[].id')
 
     # Detach from Domain
     echo "Detaching from Domain..."

@@ -61,7 +61,7 @@ COPY --from=go1.19.4-builder /go/src/github.com/xray-plugin/xray-plugin /usr/bin
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
-RUN apk add --no-cache curl tzdata openssl supervisor ca-certificates
+RUN apk add --no-cache curl tzdata openssl supervisor ca-certificates aws-cli jq
 
 COPY supervisor.d/crazy.ini /etc/supervisor.d/crazy.ini
 COPY v2ray.json /etc/crazy/v2ray.json
@@ -75,6 +75,9 @@ COPY boot.sh /etc/crazy/boot.sh
 COPY v2ray.sh /etc/crazy/v2ray.sh
 COPY xray.sh /etc/crazy/xray.sh
 COPY ssserver.sh /etc/crazy/ssserver.sh
+
+ENV AWS_DEFAULT_OUTPUT=json
+ENV AWS_DEFAULT_REGION=us-east-1
 
 WORKDIR /etc/crazy
 

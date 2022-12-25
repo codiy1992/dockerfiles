@@ -41,6 +41,10 @@ fi
 
 /bin/sh ./scripts/cloudflare.sh
 
+if [[ ! ${AWS_ACCESS_KEY_ID} && ! ${AWS_SECRET_ACCESS_KEY} ]]; then
+    /bin/sh ./scripts/cloudfront.sh
+fi
+
 if [[ -f /etc/crazy/hooks/after_booted.sh ]]; then
     /bin/sh /etc/crazy/hooks/after_booted.sh
 fi
