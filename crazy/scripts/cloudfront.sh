@@ -44,6 +44,7 @@ if [[ $? -ne 0 ]]; then
              -H "Content-Type: application/json" \
              -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
         done
+        sleep 15; # Wait for DNS
     fi
     # Create New Stack
     aws cloudformation create-stack --stack-name ${STACK_NAME} --template-body file://${CFN_TEMPLATE}
