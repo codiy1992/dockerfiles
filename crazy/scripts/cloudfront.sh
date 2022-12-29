@@ -31,7 +31,20 @@ fi
 aws cloudformation describe-stacks --stack-name ${STACK_NAME}
 
 if [[ $? -ne 0 ]]; then
-
+    # Remove Existing Alias DNS Records
+    RESULT=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records?type=CNAME&name=${AWS_CLOUDFRONT_ALIAS}&match=all" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
+    EXIST_NAME=$(echo "$RESULT" |jq '.result[0].name')
+    if [[ "${EXIST_NAME}" != "null" ]]; then
+        echo "Deleting former DNS Records for Distribution Alias:"
+        RECORD_IDS=$(echo "$RESULT" | jq '.result[].id')
+        for RECORD_ID in ${RECORD_IDS}; do
+            echo $(curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${RECORD_ID//\"/}" \
+             -H "Content-Type: application/json" \
+             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
+        done
+    fi
     # Create New Stack
     aws cloudformation create-stack --stack-name ${STACK_NAME} --template-body file://${CFN_TEMPLATE}
 
