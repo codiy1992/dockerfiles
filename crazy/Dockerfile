@@ -1,4 +1,4 @@
-FROM teddysun/v2ray:v5.3.0 AS v2fly
+FROM teddysun/v2ray:5.3.0 AS v2fly
 FROM teddysun/xray:1.7.5 AS xray
 FROM ghcr.io/shadowsocks/ssserver-rust:v1.15.3 AS shadowsocks
 
