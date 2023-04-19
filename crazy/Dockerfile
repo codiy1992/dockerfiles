@@ -1,6 +1,6 @@
-FROM v2fly/v2fly-core:v5.3.0 AS v2fly
+FROM teddysun/v2ray:v5.3.0 AS v2fly
 FROM teddysun/xray:1.7.5 AS xray
-FROM ghcr.io/shadowsocks/ssserver-rust:v1.15.1 AS shadowsocks
+FROM ghcr.io/shadowsocks/ssserver-rust:v1.15.3 AS shadowsocks
 
 # @link https://github.com/teddysun/v2ray-plugin/releases
 FROM golang:1.20-alpine AS go1.19.1-builder
