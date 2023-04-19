@@ -1,13 +1,13 @@
-FROM v2fly/v2fly-core:v5.1.0 AS v2fly
-FROM teddysun/xray:1.6.6 AS xray
+FROM v2fly/v2fly-core:v5.3.0 AS v2fly
+FROM teddysun/xray:1.7.5 AS xray
 FROM ghcr.io/shadowsocks/ssserver-rust:v1.15.1 AS shadowsocks
 
 # @link https://github.com/teddysun/v2ray-plugin/releases
-FROM golang:1.19.1-alpine AS go1.19.1-builder
+FROM golang:1.20-alpine AS go1.19.1-builder
 
 RUN set -ex && apk update && apk add --no-cache make git gcc libc-dev curl
 
-ARG V2RAY_PLUGIN_VERSION=5.1.0
+ARG V2RAY_PLUGIN_VERSION=5.3.0
 RUN curl -skLO https://github.com/teddysun/v2ray-plugin/archive/refs/tags/v${V2RAY_PLUGIN_VERSION}.tar.gz
 
 
@@ -18,11 +18,11 @@ RUN mkdir -p /go/src/github.com && \
     go build
 
 # @link https://github.com/teddysun/xray-plugin/releases
-FROM golang:1.19.4-alpine AS go1.19.4-builder
+FROM golang:1.20-alpine AS go1.19.4-builder
 
 RUN set -ex && apk update && apk add --no-cache make git gcc libc-dev curl
 
-ARG XRAY_PLUGIN_VERSION=1.6.6
+ARG XRAY_PLUGIN_VERSION=1.7.5
 RUN curl -skLO https://github.com/teddysun/xray-plugin/archive/refs/tags/v${XRAY_PLUGIN_VERSION}.tar.gz
 
 RUN mkdir -p /go/src/github.com && \
