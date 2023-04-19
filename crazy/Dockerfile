@@ -44,8 +44,8 @@ FROM caddy
 # @link https://github.com/v2fly/docker/blob/master/v2ray.sh
 COPY --from=v2fly /usr/bin/v2ray /usr/bin/v2ray
 COPY --from=v2fly /etc/v2ray/config.json /etc/v2ray/config.json
-COPY --from=v2fly /usr/local/share/v2ray/geoip.dat /usr/local/share/v2ray/geoip.dat
-COPY --from=v2fly /usr/local/share/v2ray/geosite.dat /usr/local/share/v2ray/geosite.dat
+COPY --from=v2fly /usr/share/v2ray/geoip.dat /usr/local/share/v2ray/geoip.dat
+COPY --from=v2fly /usr/share/v2ray/geosite.dat /usr/local/share/v2ray/geosite.dat
 
 # @link https://github.com/teddysun/across/blob/master/docker/xray/Dockerfile.architecture
 COPY --from=xray /usr/bin/xray /usr/bin/xray
