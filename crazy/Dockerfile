@@ -1,9 +1,9 @@
 FROM teddysun/v2ray:5.3.0 AS v2fly
-FROM teddysun/xray:1.7.5 AS xray
+FROM teddysun/xray:1.8.1 AS xray
 FROM ghcr.io/shadowsocks/ssserver-rust:v1.15.3 AS shadowsocks
 
 # @link https://github.com/teddysun/v2ray-plugin/releases
-FROM golang:1.20-alpine AS go1.19.1-builder
+FROM golang:1.20-alpine AS v2ray-plugin-builder
 
 RUN set -ex && apk update && apk add --no-cache make git gcc libc-dev curl
 
@@ -18,11 +18,11 @@ RUN mkdir -p /go/src/github.com && \
     go build
 
 # @link https://github.com/teddysun/xray-plugin/releases
-FROM golang:1.20-alpine AS go1.19.4-builder
+FROM golang:1.20.3-alpine AS xray-plugin-builder
 
 RUN set -ex && apk update && apk add --no-cache make git gcc libc-dev curl
 
-ARG XRAY_PLUGIN_VERSION=1.7.5
+ARG XRAY_PLUGIN_VERSION=1.8.1
 RUN curl -skLO https://github.com/teddysun/xray-plugin/archive/refs/tags/v${XRAY_PLUGIN_VERSION}.tar.gz
 
 RUN mkdir -p /go/src/github.com && \
@@ -55,8 +55,8 @@ COPY --from=xray /usr/share/xray/geosite.dat /usr/share/xray/geosite.dat
 
 COPY --from=shadowsocks /usr/local/bin/ssserver /usr/bin/ssserver
 
-COPY --from=go1.19.1-builder /go/src/github.com/v2ray-plugin/v2ray-plugin /usr/bin/v2ray-plugin
-COPY --from=go1.19.4-builder /go/src/github.com/xray-plugin/xray-plugin /usr/bin/xray-plugin
+COPY --from=v2ray-plugin-builder /go/src/github.com/v2ray-plugin/v2ray-plugin /usr/bin/v2ray-plugin
+COPY --from=xray-plugin-builder /go/src/github.com/xray-plugin/xray-plugin /usr/bin/xray-plugin
 
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
