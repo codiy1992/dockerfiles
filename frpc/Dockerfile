@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 ARG FRP_VERSION
-ENV FRP_VERSION ${FRP_VERSION:-0.37.1}
+ENV FRP_VERSION ${FRP_VERSION:-0.49.0}
 
 RUN cd /root \
     && arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) \
