@@ -46,7 +46,7 @@ if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN}
           --header 'Content-Type: application/json' \
           --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
           --data "{ \
-            \"type\": \"A\", \
+            \"type\": \"AAAA\", \
             \"comment\": \"Automatically Created by crazy\", \
             \"content\": \"${IPV6_ADDRESS}\", \
             \"name\": \"${DOMAIN_CDN}\", \
