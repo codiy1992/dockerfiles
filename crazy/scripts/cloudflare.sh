@@ -104,7 +104,7 @@ fi
 
 
 # Cloudflare Worker
-if [[ ${CLOUDFLARE_ACCOUNT_ID} && ${CLOUDFLARE_ZONE_NAME} && "${IPV4_ADDRESS}" != "" ]]; then
+if [[ "${CLOUDFLARE_ACCOUNT_ID}" != "" && "${CLOUDFLARE_ZONE_NAME}" != "" && "${IPV4_ADDRESS}" != "" ]]; then
     SCRIPT_NAME="w${IPV4_NAME}"
     HOSTNAME="${SCRIPT_NAME}.${CLOUDFLARE_ZONE_NAME}"
     SCRIPT_NAME_OLD="w${IPV4_OLD//./}"
