@@ -3,23 +3,8 @@ CLOUDFLARE_API_ENDPOINT=https://api.cloudflare.com/client/v4
 
 # Automatically Create new DNS Record
 if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
-    if [[ "${IPV6_ADDRESS}" != "" ]]; then
-        echo "Creating DNS Record ${DOMAIN} -> ${IPV6_ADDRESS}:"
-        echo $(curl -s --request POST \
-          --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
-          --header 'Content-Type: application/json' \
-          --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-          --data "{ \
-            \"type\": \"AAAA\", \
-            \"comment\": \"Automatically Created by crazy\", \
-            \"content\": \"${IPV6_ADDRESS}\", \
-            \"name\": \"${DOMAIN}\", \
-            \"priority\": 10, \
-            \"proxied\": false, \
-            \"ttl\": 1  \
-        }")
-    else
-        echo "Creating DNS Record ${DOMAIN} -> ${IPV4_ADDRESS}:"
+    if [[ "${IPV4_ADDRESS}" != "" ]]; then
+        echo "Creating DNS Record (IPv4) ${DOMAIN} -> ${IPV4_ADDRESS}:"
         echo $(curl -s --request POST \
           --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
           --header 'Content-Type: application/json' \
@@ -28,6 +13,22 @@ if [[ "${DOMAIN}" != "" && ${CLOUDFLARE_ZONE_ID} ]]; then
             \"type\": \"A\", \
             \"comment\": \"Automatically Created by crazy\", \
             \"content\": \"${IPV4_ADDRESS}\", \
+            \"name\": \"${DOMAIN}\", \
+            \"priority\": 10, \
+            \"proxied\": false, \
+            \"ttl\": 1  \
+        }")
+    fi
+    if [[ "${IPV6_ADDRESS}" != "" ]]; then
+        echo "Creating DNS Record (IPv6) ${DOMAIN} -> ${IPV6_ADDRESS}:"
+        echo $(curl -s --request POST \
+          --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
+          --header 'Content-Type: application/json' \
+          --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+          --data "{ \
+            \"type\": \"AAAA\", \
+            \"comment\": \"Automatically Created by crazy\", \
+            \"content\": \"${IPV6_ADDRESS}\", \
             \"name\": \"${DOMAIN}\", \
             \"priority\": 10, \
             \"proxied\": false, \
@@ -39,23 +40,8 @@ fi
 ACME_DIR=${ACME_DIR:-'acme-v02.api.letsencrypt.org-directory'}
 ACME_CERT_FILE_CDN=/data/caddy/certificates/${ACME_DIR}/${DOMAIN_CDN}/${DOMAIN_CDN}.crt
 if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN} ]]; then
-    if [[ "${IPV6_ADDRESS}" != "" ]]; then
-        echo "Creating DNS Record ${DOMAIN_CDN} -> ${IPV6_ADDRESS}:"
-        echo $(curl -s --request POST \
-          --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
-          --header 'Content-Type: application/json' \
-          --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-          --data "{ \
-            \"type\": \"AAAA\", \
-            \"comment\": \"Automatically Created by crazy\", \
-            \"content\": \"${IPV6_ADDRESS}\", \
-            \"name\": \"${DOMAIN_CDN}\", \
-            \"priority\": 10, \
-            \"proxied\": true, \
-            \"ttl\": 1  \
-        }")
-    else
-        echo "Creating DNS Record ${DOMAIN_CDN} -> ${IPV4_ADDRESS}:"
+    if [[ "${IPV4_ADDRESS}" != "" ]]; then
+        echo "Creating DNS Record (IPv4) ${DOMAIN_CDN} -> ${IPV4_ADDRESS}:"
         echo $(curl -s --request POST \
           --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
           --header 'Content-Type: application/json' \
@@ -70,6 +56,22 @@ if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN}
             \"ttl\": 1  \
         }")
     fi
+    if [[ "${IPV6_ADDRESS}" != "" ]]; then
+        echo "Creating DNS Record (IPv6) ${DOMAIN_CDN} -> ${IPV6_ADDRESS}:"
+        echo $(curl -s --request POST \
+          --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records \
+          --header 'Content-Type: application/json' \
+          --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+          --data "{ \
+            \"type\": \"AAAA\", \
+            \"comment\": \"Automatically Created by crazy\", \
+            \"content\": \"${IPV6_ADDRESS}\", \
+            \"name\": \"${DOMAIN_CDN}\", \
+            \"priority\": 10, \
+            \"proxied\": true, \
+            \"ttl\": 1  \
+        }")
+    if
 fi
 
 # Automatically Remove Old DNS records when CLOUDFLARE_ZONE_ID environment variable is set.

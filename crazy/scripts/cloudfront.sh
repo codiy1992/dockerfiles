@@ -8,6 +8,10 @@ if [[ ! ${INSTANCE_ID} ]]; then
     return;
 fi
 
+if [[ "${IPV4_ADDRESS}" != "" && "${ORIGIN_SERVER}" != "" ]]; then
+    AWS_CLOUDFRONT_ORIGIN_SERVER=${ORIGIN_SERVER-${DOMAIN}}
+fi
+
 sed '/^[[:blank:]]*#/d;s/#.*//' /etc/crazy/scripts/cfn-cloudfront.yaml > ${CFN_TEMPLATE}
 sed -i "s/ORIGIN_SERVER/${AWS_CLOUDFRONT_ORIGIN_SERVER-${DOMAIN}}/g" ${CFN_TEMPLATE}
 sed -i "s/INSTANCE_ID/${INSTANCE_ID}/g" ${CFN_TEMPLATE}
