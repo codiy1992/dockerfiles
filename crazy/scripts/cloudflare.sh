@@ -71,7 +71,7 @@ if [[ "${DOMAIN_CDN}" != "" && ${CLOUDFLARE_ZONE_ID} && -f ${ACME_CERT_FILE_CDN}
             \"proxied\": true, \
             \"ttl\": 1  \
         }")
-    if
+    fi
 fi
 
 # Automatically Remove Old DNS records when CLOUDFLARE_ZONE_ID environment variable is set.
