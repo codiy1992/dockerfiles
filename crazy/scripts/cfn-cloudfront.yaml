@@ -68,6 +68,7 @@ Resources:
         HeadersConfig:
           HeaderBehavior: whitelist
           Headers:
+            - Content-Type
             - Sec-WebSocket-Key
             - Sec-WebSocket-Version
             - Sec-WebSocket-Protocol
