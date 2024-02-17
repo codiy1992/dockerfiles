@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 ARG FRP_VERSION
-ENV FRP_VERSION ${FRP_VERSION:-0.49.0}
+ENV FRP_VERSION ${FRP_VERSION:-0.54.0}
 
 RUN cd /root \
     && arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) \
@@ -15,4 +15,4 @@ RUN cd /root \
     &&  rm frp_${FRP_VERSION}_linux_${arch}.tar.gz \
     &&  rm -rf frp_${FRP_VERSION}_linux_${arch}/
 
-ENTRYPOINT /usr/bin/frpc -c /etc/frp/frpc.ini
+ENTRYPOINT /usr/bin/frpc -c /etc/frp/frpc.toml
